@@ -165,7 +165,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        self.wfile.write(body)
+        if self.command != "HEAD":
+            self.wfile.write(body)
 
     def _send_file(self, filename, content_type):
         path = os.path.join(BASE_DIR, filename)
@@ -180,7 +181,8 @@ class Handler(BaseHTTPRequestHandler):
                         if content_type.startswith("text/") else content_type)
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        self.wfile.write(body)
+        if self.command != "HEAD":
+            self.wfile.write(body)
 
     def do_OPTIONS(self):
         self.send_response(204)
@@ -209,6 +211,9 @@ class Handler(BaseHTTPRequestHandler):
                 {"id": k, **v} for k, v in CONTENT_TYPES.items()]})
             return
         self._send_json({"error": "not found"}, 404)
+
+    def do_HEAD(self):  # uptime monitors often probe with HEAD
+        self.do_GET()
 
     def do_POST(self):
         path = urlparse(self.path).path.rstrip("/") or "/"
