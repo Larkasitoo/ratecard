@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RateCard — What should creators charge for brand deals?</title>
+<meta name="description" content="RateCard gives creators instant, benchmark-based price estimates for sponsored posts, videos, and stories. Free.">
+<style>
+  :root { --bg:#0e0f13; --card:#171920; --ink:#f2f3f5; --mut:#9aa0ad; --acc:#7c5cff; --acc2:#00d1a1; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; line-height:1.6; }
+  .wrap { max-width:880px; margin:0 auto; padding:48px 20px 80px; }
+  header { text-align:center; margin-bottom:40px; }
+  .logo { font-size:44px; font-weight:800; letter-spacing:-1px; }
+  .logo span { color:var(--acc); }
+  .tag { color:var(--mut); font-size:18px; margin-top:8px; }
+  .card { background:var(--card); border:1px solid #262a35; border-radius:16px; padding:28px; margin:24px 0; }
+  h2 { font-size:22px; margin-bottom:12px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .grid{grid-template-columns:1fr;} }
+  label { display:block; font-size:13px; color:var(--mut); margin-bottom:6px; text-transform:uppercase; letter-spacing:.5px; }
+  select, input { width:100%; background:#0e0f13; color:var(--ink); border:1px solid #2c313d; border-radius:10px; padding:12px; font-size:16px; }
+  button.cta { width:100%; margin-top:18px; background:linear-gradient(135deg,var(--acc),#5a3df0); color:#fff; border:0; border-radius:12px; padding:15px; font-size:17px; font-weight:700; cursor:pointer; }
+  button.cta:hover { filter:brightness(1.1); }
+  #result { display:none; margin-top:20px; text-align:center; }
+  #result .range { font-size:40px; font-weight:800; margin:8px 0; }
+  #result .range small { color:var(--mut); font-size:16px; font-weight:400; }
+  .pill { display:inline-block; background:#0e0f13; border:1px solid #2c313d; border-radius:999px; padding:6px 14px; font-size:13px; color:var(--mut); margin:4px; }
+  .addons { text-align:left; margin-top:16px; font-size:15px; }
+  .addons div { padding:8px 0; border-top:1px solid #262a35; }
+  .tips { font-size:14px; color:var(--mut); margin-top:14px; text-align:left; }
+  .tips li { margin:6px 0 6px 18px; }
+  .how { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px; }
+  @media (max-width:640px){ .how{grid-template-columns:1fr;} }
+  .how div { background:#0e0f13; border:1px solid #262a35; border-radius:12px; padding:18px; font-size:14px; color:var(--mut); }
+  .how b { color:var(--ink); display:block; margin-bottom:6px; font-size:15px; }
+  footer { text-align:center; color:var(--mut); font-size:13px; margin-top:48px; }
+  footer a { color:var(--mut); margin:0 10px; }
+  .err { color:#ff7a7a; margin-top:12px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">Rate<span>Card</span></div>
+    <p class="tag">Stop guessing. Know what your content is worth.</p>
+  </header>
+
+  <div class="card">
+    <h2>Price your next brand deal</h2>
+    <div class="grid">
+      <div><label>Niche</label><select id="niche"></select></div>
+      <div><label>Followers</label><input id="followers" type="number" value="50000" min="1000" max="100000000"></div>
+      <div><label>Platform</label><select id="platform"></select></div>
+      <div><label>Content type</label><select id="ctype"></select></div>
+    </div>
+    <div style="margin-top:14px"><label>Engagement rate % (optional)</label><input id="eng" type="number" step="0.1" placeholder="e.g. 4.2"></div>
+    <button class="cta" onclick="calc()">Get my rate →</button>
+    <div class="err" id="err"></div>
+    <div id="result">
+      <div class="pill" id="tier"></div>
+      <div class="range"><span id="low"></span> – <span id="high"></span> <small>USD / per deliverable</small></div>
+      <div class="addons" id="addons"></div>
+      <ul class="tips" id="tips"></ul>
+      <p style="font-size:12px;color:var(--mut);margin-top:12px">Estimate based on 2026 public influencer rate benchmarks. Actual deals vary.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How it works</h2>
+    <div class="how">
+      <div><b>1. Tell us about you</b>Niche, follower count, platform, content type — 10 seconds.</div>
+      <div><b>2. We crunch benchmarks</b>Calibrated against published 2026 brand-deal rates across tiers and niches.</div>
+      <div><b>3. Quote with confidence</b>Get a low–high range plus add-ons like usage rights and exclusivity.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Use it inside Muse</h2>
+    <p style="color:var(--mut)">RateCard is also a Muse connector. Just ask:</p>
+    <p style="margin-top:10px">“How much should a fitness creator with 50k Instagram followers charge for a sponsored post?”</p>
+    <p style="margin-top:6px">“Price a 90-second TikTok for a beauty creator with 120k followers.”</p>
+  </div>
+
+  <footer>
+    <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/openapi.json">API</a>
+    <p style="margin-top:8px">© 2026 RateCard. Estimates are informational, not financial advice.</p>
+  </footer>
+</div>
+<script>
+async function load(id, url, key, label){
+  const r = await fetch(url); const j = await r.json();
+  const sel = document.getElementById(id);
+  j[key].forEach(o => { const op = document.createElement('option'); op.value = o.id; op.textContent = o.name; sel.appendChild(op); });
+}
+async function init(){
+  await Promise.all([
+    load('niche','/api/niches','niches'),
+    load('platform','/api/platforms','platforms'),
+    load('ctype','/api/content-types','content_types'),
+  ]);
+  document.getElementById('niche').value='fitness';
+  document.getElementById('platform').value='instagram';
+  document.getElementById('ctype').value='post';
+}
+async function calc(){
+  document.getElementById('err').textContent='';
+  const body = {
+    niche: document.getElementById('niche').value,
+    followers: Number(document.getElementById('followers').value),
+    platform: document.getElementById('platform').value,
+    content_type: document.getElementById('ctype').value,
+  };
+  const eng = document.getElementById('eng').value;
+  if (eng) body.engagement_rate = Number(eng);
+  const r = await fetch('/api/price',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j = await r.json();
+  if (!r.ok){ document.getElementById('err').textContent = j.error || 'Something went wrong'; return; }
+  const f = n => '$' + n.toLocaleString();
+  document.getElementById('tier').textContent = j.tier + ' tier · ' + j.inputs.niche;
+  document.getElementById('low').textContent = f(j.estimate.low);
+  document.getElementById('high').textContent = f(j.estimate.high);
+  document.getElementById('addons').innerHTML =
+    `<div>📄 ${j.add_ons.usage_rights_90d.label}: <b>${f(j.add_ons.usage_rights_90d.low)} – ${f(j.add_ons.usage_rights_90d.high)}</b></div>` +
+    `<div>🔒 ${j.add_ons.exclusivity_6mo.label}: <b>${f(j.add_ons.exclusivity_6mo.low)} – ${f(j.add_ons.exclusivity_6mo.high)}</b></div>`;
+  document.getElementById('tips').innerHTML = j.tips.map(t=>`<li>${t}</li>`).join('');
+  document.getElementById('result').style.display='block';
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+init();
+</script>
+</body>
+</html>
